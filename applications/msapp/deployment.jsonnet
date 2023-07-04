@@ -23,5 +23,10 @@ local deploy = deployment.metadata.withName(config.name)
                + deployment.spec.template.spec.withContainers([msappContainer])
                + deployment.spec.template.spec.withServiceAccountName(config.name);
 
+local serviceAccount = kube.core.v1.serviceAccount;
 
-deploy + deploymentDefaults.mkDefaults(config.labels)
+[
+  serviceAccount.new(config.name) + serviceAccount.metadata.withAnnotations(config.service_account.annotations),
+
+  deploy + deploymentDefaults.mkDefaults(config.labels),
+]
