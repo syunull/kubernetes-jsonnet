@@ -11,7 +11,7 @@ local tsc = kube.core.v1.topologySpreadConstraint;
                                  + tsc.labelSelector.withMatchLabels(labels),
   }.topology_spread_constraints,
 
-  mkDefaults:: function(labels) {
+  mkDefaults:: function(labels={}) {
     defaults: deployment.spec.withRevisionHistoryLimit(3)
               + deployment.spec.template.spec.withTopologySpreadConstraints($.mkTopologySpreadConstraints('ScheduleAnyway', labels)),
   }.defaults,
