@@ -10,23 +10,16 @@ local deployment = kube.apps.v1.deployment;
 local msappPort = containerPort.new(config.port.port)
                   + containerPort.withName(config.port.name);
 
-local msappContainer = container.new(config.name, config.image + ':' + config.version)
+local msappContainer = containerDefaults.defaults
+                       + container.new(config.name, config.image + ':' + config.version)
                        + container.withPorts(msappPort)
                        + container.withEnv(config.env)
-                       + containerDefaults.defaults;
-
+                       + container.resources.withLimits({ memory: '512Mi', cpu: '2000m' });
 
 local deploy = deployment.metadata.withName(config.name)
-               + deployment.spec.withReplicas(3)
                + deployment.spec.selector.withMatchLabels(config.labels)
                + deployment.spec.template.metadata.withLabels(config.labels)
                + deployment.spec.template.spec.withContainers([msappContainer])
                + deployment.spec.template.spec.withServiceAccountName(config.name);
 
-local serviceAccount = kube.core.v1.serviceAccount;
-
-[
-  serviceAccount.new(config.name) + serviceAccount.metadata.withAnnotations(config.service_account.annotations),
-
-  deploy + deploymentDefaults.mkDefaults(config.labels),
-]
+deploymentDefaults.mkDefaults(config.labels) + deploy

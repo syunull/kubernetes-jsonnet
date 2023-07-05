@@ -8,9 +8,7 @@ local datadagAgentEnvVar = envVar.withName('DD_AGENT_HOST')
 
 local containerDefaults = container.resources.withLimits({ memory: '512Mi', cpu: '1000m' })
                           + container.resources.withRequests({ memory: '512Mi', cpu: '1000m' })
-                          + container.withEnvFromMixin([datadagAgentEnvVar])
+                          + container.withEnvFrom([datadagAgentEnvVar])
                           + container.securityContext.withRunAsNonRoot(true);
 
-{
-  defaults: containerDefaults,
-}
+{ defaults: containerDefaults }
