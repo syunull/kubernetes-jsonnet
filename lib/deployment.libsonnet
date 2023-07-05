@@ -1,6 +1,5 @@
 local kube = import '../vendor/github.com/jsonnet-libs/k8s-libsonnet/1.24/main.libsonnet';
 local deployment = kube.apps.v1.deployment;
-
 local tsc = kube.core.v1.topologySpreadConstraint;
 
 {

@@ -13,7 +13,7 @@ local envVar = kube.core.v1.envVar;
   name: 'msapp',
   port: {
     name: 'http',
-    port: 8080,
+    port: 9000,
   },
   service_account: {
     annotations: {
@@ -21,4 +21,6 @@ local envVar = kube.core.v1.envVar;
     },
   },
   version: '1.1.1',
+
+
 }
